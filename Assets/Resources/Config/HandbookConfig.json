@@ -1,0 +1,107 @@
+﻿[
+	{
+		"BlockName": "泥土",
+		"Description": "普普通通的泥土。\n也许可以尝试搭建一间小屋？注意不要填充太满，因为这里是俄罗斯方块。",
+		"Icon": "GridMaterials/Dirt"
+	},
+	{
+		"BlockName": "圆石",
+		"Description": "可以被熔炉烧炼成石头。\n\"在普通的动次打次中普通的燃烧~\"——普通DISCO",
+		"Icon": "GridMaterials/Cobblestone"
+	},
+	{
+		"BlockName": "石头",
+		"Description": "普普通通的石头。\n确认过眼神，就是随处可见的石头。",
+		"Icon": "GridMaterials/Stone"
+	},
+	{
+		"BlockName": "草方块",
+		"Description": "在泥土上长满了草。\n是的没错，我们提高了绿地率。\n泰裤辣！",
+		"Icon": "GridMaterials/GrassBlock"
+	},
+	{
+		"BlockName": "熔炉",
+		"Description": "可以烧炼周围八格的方块。\n什么？你问我为什么不需要燃料？",
+		"Icon": "GridMaterials/Furnace"
+	},
+	{
+		"BlockName": "红石块",
+		"Description": "向周围四格提供红石能量。\n不！你不可以在这里造计算器。",
+		"Icon": "GridMaterials/RedStoneBlock"
+	},
+	{
+		"BlockName": "红石粉",
+		"Description": "可以传递红石能量。\n放心吧，这里没有水。",
+		"Icon": "GridMaterials/RedStonePweder"
+	},
+	{
+		"BlockName": "TNT",
+		"Description": "周围四格存在红石能量时，产生能波及2格的爆炸。\nBoom Shakalaka~",
+		"Icon": "GridMaterials/TNTBlock"
+	},
+	{
+		"BlockName": "箱子",
+		"Description": "周围有方块时，会被箱子存起来，最多存储8个方块；箱子被破坏时方块将随机填充到其他位置。爆金币了！",
+		"Icon": "GridMaterials/Chest"
+	},
+	{
+		"BlockName": "潜影盒",
+		"Description": "周围有方块时，会被潜影盒存起来，最多存储8个方块；潜影盒被破坏时方块将被销毁。你的就是我的，我的还是我的。",
+		"Icon": "GridMaterials/ShulkerBox"
+	},
+	{
+		"BlockName": "铁砧",
+		"Description": "如果铁砧所在的列下方有空格则整列下移。\n空间就像海绵里的水，挤挤总会有的。",
+		"Icon": "GridMaterials/Anvil"
+	},
+	{
+		"BlockName": "黑曜石",
+		"Description": "不会被TNT炸掉。\n这很MC。",
+		"Icon": "GridMaterials/Obsidian"
+	},
+	{
+		"BlockName": "沙子",
+		"Description": "落下时如果下方没有方块则向下填充。",
+		"Icon": "GridMaterials/Sand"
+	},
+	{
+		"BlockName": "沙砾",
+		"Description": "落下时如果下方没有方块则向下填充。",
+		"Icon": "GridMaterials/Gravel"
+	},
+	{
+		"BlockName": "玻璃",
+		"Description": "顶部有方块时玻璃会碎裂。\n摸头杀！",
+		"Icon": "GridMaterials/Glass"
+	},
+	{
+		"BlockName": "仙人掌",
+		"Description": "顶部有方块时，方块被摧毁；两侧有方块时仙人掌被摧毁。\n退！退！退！",
+		"Icon": "GridMaterials/Cactus"
+	},
+	{
+		"BlockName": "末影箱",
+		"Description": "顶部有方块时，会将方块随机移动到空位置。\n空间传送。",
+		"Icon": "GridMaterials/EnderChest"
+	},
+	{
+		"BlockName": "铁块",
+		"Description": "\"听说好像有铁傀儡？\"\n\"不，没有，因为没有足够的预算。\"",
+		"Icon": "GridMaterials/IronBlock"
+	},
+	{
+		"BlockName": "雪块",
+		"Description": "\"听说好像有雪傀儡？\"\n\"不，没有，因为没有足够的预算。\"",
+		"Icon": "GridMaterials/SnowBlock"
+	},
+	{
+		"BlockName": "雕刻南瓜",
+		"Description": "\"所以这个东西有什么用？\"\n\"好看...大概叭。\"",
+		"Icon": "GridMaterials/CarvedPumpkin"
+	},
+	{
+		"BlockName": "漏斗",
+		"Description": "尝试将一侧的方块移动至另外一侧。\n没有掉落物，没有卡顿。",
+		"Icon": "GridMaterials/Hopper"
+	}
+]
