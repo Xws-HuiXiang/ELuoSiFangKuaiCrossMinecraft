@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GridData
@@ -45,8 +47,8 @@ public class GridData
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public void Eliminate(int x, int y)
+    public async void Eliminate(int x, int y)
     {
-        this.gridMaterial.Eliminate(this.gameObject, x, y);
+        await this.gridMaterial.Eliminate(this.gameObject, x, y);
     }
 }

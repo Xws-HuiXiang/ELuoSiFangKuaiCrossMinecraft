@@ -46,25 +46,25 @@ public class GridMaterialController
     /// </summary>
     private void RegisterAllGridMaterials()
     {
-        RegisterGridMaterial(new DirtGridMaterial(), 1);
-        RegisterGridMaterial(new CobblestoneGridMaterial(), 1);
-        RegisterGridMaterial(new StoneGridMaterial(), 1);
-        RegisterGridMaterial(new GrassBlockGridMaterial(), 1);
-        RegisterGridMaterial(new FurnaceGridMaterial(), 1);
-        RegisterGridMaterial(new RedStoneBlockGridMaterial(), 1);
-        RegisterGridMaterial(new RedStonePwederGridMaterial(), 1);
+        RegisterGridMaterial(new DirtGridMaterial(), 2);
+        RegisterGridMaterial(new CobblestoneGridMaterial(), 2);
+        RegisterGridMaterial(new StoneGridMaterial(), 2);
+        RegisterGridMaterial(new GrassBlockGridMaterial(), 2);
+        RegisterGridMaterial(new FurnaceGridMaterial(), 2);
+        RegisterGridMaterial(new RedStoneBlockGridMaterial(), 2);
+        RegisterGridMaterial(new RedStonePwederGridMaterial(), 2);
         RegisterGridMaterial(new TNTBlockGridMaterial(), 1);
         RegisterGridMaterial(new ChestGridMaterial(), 1);
         RegisterGridMaterial(new ShulkerBoxGridMaterial(), 1);
         RegisterGridMaterial(new AnvilGridMaterial(), 1);
-        RegisterGridMaterial(new ObsidianGridMaterial(), 1);
-        RegisterGridMaterial(new SandGridMaterial(), 1);
-        RegisterGridMaterial(new GlassGridMaterial(), 1);
-        RegisterGridMaterial(new CactusGridMaterial(), 1);
-        RegisterGridMaterial(new IronBlockGridMaterial(), 1);
-        RegisterGridMaterial(new SnowBlockGridMaterial(), 1);
-        RegisterGridMaterial(new CarvedPumpkinGridMaterial(), 1);
-        RegisterGridMaterial(new HopperGridMaterial(), 1);
+        RegisterGridMaterial(new ObsidianGridMaterial(), 2);
+        RegisterGridMaterial(new SandGridMaterial(), 2);
+        RegisterGridMaterial(new GlassGridMaterial(), 2);
+        RegisterGridMaterial(new CactusGridMaterial(), 2);
+        RegisterGridMaterial(new IronBlockGridMaterial(), 2);
+        RegisterGridMaterial(new SnowBlockGridMaterial(), 2);
+        RegisterGridMaterial(new CarvedPumpkinGridMaterial(), 2);
+        RegisterGridMaterial(new HopperGridMaterial(), 2);
     }
 
     /// <summary>

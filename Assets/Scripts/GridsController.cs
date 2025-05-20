@@ -1,8 +1,11 @@
-﻿using DG.Tweening;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GridsController : MonoBehaviour
@@ -84,9 +87,9 @@ public class GridsController : MonoBehaviour
     /// </summary>
     private GridShape fallingDownShape = null;
     /// <summary>
-    /// 正在下落的形状协程
+    /// 正在下落的形状的异步任务取消令牌
     /// </summary>
-    private IEnumerator fallingDownShapeIE = null;
+    private CancellationTokenSource cts;
 
 #if UNITY_EDITOR
     [SerializeField]
@@ -211,48 +214,55 @@ public class GridsController : MonoBehaviour
     {
         fallingDownShape = gridShape;
 
-        fallingDownShapeIE = FallingDownIE();
-        StartCoroutine(fallingDownShapeIE);
+        cts = new CancellationTokenSource();
+        FallingDownAsync(cts.Token);
     }
 
     /// <summary>
     /// 形状下落协程
     /// </summary>
     /// <returns></returns>
-    private IEnumerator FallingDownIE()
+    private async void FallingDownAsync(CancellationToken token)
     {
-        while (true)
+        try
         {
-            yield return new WaitForSeconds(FallingDownTime);
-
-            while (GameManager.Instance.Pausing)
-                yield return null;
-
-            //判断是否可以下落
-            if (fallingDownShape.CanFallDown())
-                fallingDownShape.FallDown();
-            else
+            while (true)
             {
-                //不能下落了，结束循环
-                fallingDownShape.FallDownEnd();
-                fallingDownShape = null;
-                break;
-            }
-        }
-        //检查是否存在可以消除的行
-        TryEliminate();
-        //检查游戏是否结束
-        bool isGameOver = CheckGameOver();
-        if (isGameOver)
-            yield break;
+                await UniTask.Delay((int)TimeSpan.FromSeconds(FallingDownTime).TotalMilliseconds, cancellationToken: token);
 
-        //随机生成下一个形状
+                while (GameManager.Instance.Pausing)
+                    await UniTask.DelayFrame(1, cancellationToken: token);
+
+                //判断是否可以下落
+                if (fallingDownShape.CanFallDown())
+                    fallingDownShape.FallDown();
+                else
+                {
+                    //不能下落了，结束循环
+                    await fallingDownShape.FallDownEnd();
+                    fallingDownShape = null;
+                    break;
+                }
+            }
+            //检查是否存在可以消除的行
+            await TryEliminate();
+            //检查游戏是否结束
+            bool isGameOver = CheckGameOver();
+            if (isGameOver)
+                return;
+
+            //随机生成下一个形状
 #if UNITY_EDITOR
-        if (!debugModel)
-            RandomGenerateShape();
+            if (!debugModel)
+                RandomGenerateShape();
 #else
     RandomGenerateShape();
 #endif
+        }
+        catch (OperationCanceledException)
+        {
+
+        }
     }
 
     /// <summary>
@@ -277,7 +287,7 @@ public class GridsController : MonoBehaviour
     /// <summary>
     /// 尝试消除
     /// </summary>
-    public void TryEliminate()
+    public async UniTask TryEliminate()
     {
         List<int> eliminateLineList = new List<int>();
         for (int y = 0; y < GridHeightCount; y++)
@@ -311,7 +321,10 @@ public class GridsController : MonoBehaviour
         }
         //如果需要计算下落
         if (eliminateLineList.Count > 0)
+        {
             GridDropDown(eliminateLineList);
+            await UniTask.Delay((int)TimeSpan.FromSeconds(FallingDownTime).TotalMilliseconds);
+        }
     }
 
     /// <summary>
@@ -674,8 +687,8 @@ public class GridsController : MonoBehaviour
             UnityEngine.Object.Destroy(fallingDownShape.GridsParent);
             fallingDownShape = null;
         }
-        if (fallingDownShapeIE != null)
-            this.StopCoroutine(fallingDownShapeIE);
+        //if (fallingDownShapeIE != null)
+        //    this.StopCoroutine(fallingDownShapeIE);
         StopAllCoroutines();
     }
 }

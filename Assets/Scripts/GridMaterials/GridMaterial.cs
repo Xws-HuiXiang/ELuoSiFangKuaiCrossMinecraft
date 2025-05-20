@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,7 +60,7 @@ public abstract class GridMaterial : ICloneable
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="updateSource"></param>
-    public virtual void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public virtual async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
         if (updateSource)
         {
@@ -68,8 +69,11 @@ public abstract class GridMaterial : ICloneable
             {
                 Vector2Int updateGridPos = pos + gridUpdateArray[i];
                 GridData gridData = GameManager.Instance.GridsController.GetGridData(updateGridPos);
-                gridData?.GridMaterial.GridUpdate(gridData.GameObject.transform, updateGridPos.x, updateGridPos.y, false);
+                if (gridData != null)
+                    await gridData.GridMaterial.GridUpdate(gridData.GameObject.transform, updateGridPos.x, updateGridPos.y, false);
             }
+
+            await UniTask.Delay(200);
         }
     }
 
@@ -79,9 +83,9 @@ public abstract class GridMaterial : ICloneable
     /// <param name="go"></param>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public virtual void Eliminate(GameObject go, int x, int y)
+    public virtual async UniTask Eliminate(GameObject go, int x, int y)
     {
-        GridUpdate(go.transform, x, y, true);
+        await GridUpdate(go.transform, x, y, true);
     }
 
     /// <summary>

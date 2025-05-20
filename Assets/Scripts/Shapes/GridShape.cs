@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -130,7 +132,7 @@ public abstract class GridShape
     /// <summary>
     /// 结束下落
     /// </summary>
-    public virtual void FallDownEnd()
+    public virtual async UniTask FallDownEnd()
     {
         //将这个形状添加到网格数据中
         int childCount = gridsParent.transform.childCount;
@@ -150,7 +152,7 @@ public abstract class GridShape
             //触发材质落下事件
             gridMaterial.FallDown(child, x, y);
             //触发材质更新事件
-            gridMaterial.GridUpdate(child, x, y, true);
+            await gridMaterial.GridUpdate(child, x, y, true);
         }
         //删除形状组物体
         UnityEngine.Object.Destroy(gridsParent);

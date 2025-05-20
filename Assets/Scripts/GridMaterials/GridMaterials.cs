@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -126,9 +128,9 @@ public class FurnaceGridMaterial : GridMaterial
         TrySmelt(x, y);
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         TrySmelt(x, y);
     }
@@ -146,9 +148,9 @@ public class RedStoneBlockGridMaterial : GridMaterial
         return new RedStoneBlockGridMaterial();
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         //向四周提供红石能量
         for (int i = 0; i < gridUpdateArray.Length; i++)
@@ -347,9 +349,9 @@ public class ChestGridMaterial : GridMaterial
         };
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         //如果箱子没满则尝试存储周围的方块
         if (chestContentList.Count < chestTotalCapacity)
@@ -366,6 +368,13 @@ public class ChestGridMaterial : GridMaterial
                     GridData gridData = GameManager.Instance.GridsController.GetGridData(px, py);
                     if (gridData != null)
                     {
+                        //不能存储箱子
+                        if (gridData.GridMaterial is ChestGridMaterial) continue;
+                        //不能存储潜影盒
+                        if (gridData.GridMaterial is ShulkerBoxGridMaterial) continue;
+                        //不能存储末影箱
+                        if (gridData.GridMaterial is EnderChestGridMaterial) continue;
+
                         //存储格子数据
                         chestContentList.Add(gridData);
                         GameManager.Instance.GridsController.SetGridData(px, py, null);
@@ -376,9 +385,9 @@ public class ChestGridMaterial : GridMaterial
         }
     }
 
-    public override void Eliminate(GameObject go, int x, int y)
+    public override async UniTask Eliminate(GameObject go, int x, int y)
     {
-        base.Eliminate(go, x, y);
+        await base.Eliminate(go, x, y);
 
         List<GridData> resetList = new List<GridData>();
         //箱子里的物品随机填充到某一列的顶部
@@ -477,9 +486,9 @@ public class ShulkerBoxGridMaterial : GridMaterial
         };
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         //如果潜影盒没满则尝试存储周围的方块
         if (chestContentList.Count < chestTotalCapacity)
@@ -496,6 +505,13 @@ public class ShulkerBoxGridMaterial : GridMaterial
                     GridData gridData = GameManager.Instance.GridsController.GetGridData(px, py);
                     if (gridData != null)
                     {
+                        //不能存储箱子
+                        if (gridData.GridMaterial is ChestGridMaterial) continue;
+                        //不能存储潜影盒
+                        if (gridData.GridMaterial is ShulkerBoxGridMaterial) continue;
+                        //不能存储末影箱
+                        if (gridData.GridMaterial is EnderChestGridMaterial) continue;
+
                         //存储格子数据
                         chestContentList.Add(gridData);
                         GameManager.Instance.GridsController.SetGridData(px, py, null);
@@ -506,9 +522,9 @@ public class ShulkerBoxGridMaterial : GridMaterial
         }
     }
 
-    public override void Eliminate(GameObject go, int x, int y)
+    public override async UniTask Eliminate(GameObject go, int x, int y)
     {
-        base.Eliminate(go, x, y);
+        await base.Eliminate(go, x, y);
 
         //同时清除已经存储的方块
         for (int i = 0; i < chestContentList.Count; i++)
@@ -575,9 +591,9 @@ public class SandGridMaterial : GridMaterial
         return new SandGridMaterial();
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         if (updateSource)
         {
@@ -589,7 +605,7 @@ public class SandGridMaterial : GridMaterial
 
                 GridData gridData = GameManager.Instance.GridsController.GetGridData(x, emptyPosY);
                 //触发一次更新事件
-                GridUpdate(gridData.GameObject.transform, x, emptyPosY, true);
+                await GridUpdate(gridData.GameObject.transform, x, emptyPosY, true);
             }
         }
     }
@@ -607,9 +623,9 @@ public class GravelGridMaterial : GridMaterial
         return new GravelGridMaterial();
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         if (updateSource)
         {
@@ -621,7 +637,7 @@ public class GravelGridMaterial : GridMaterial
 
                 GridData gridData = GameManager.Instance.GridsController.GetGridData(x, emptyPosY);
                 //触发一次更新事件
-                GridUpdate(gridData.GameObject.transform, x, emptyPosY, true);
+                await GridUpdate(gridData.GameObject.transform, x, emptyPosY, true);
             }
         }
     }
@@ -639,9 +655,9 @@ public class GlassGridMaterial : GridMaterial
         return new GlassGridMaterial();
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         //如果头顶有方块，则玻璃碎裂
         var gridData = GameManager.Instance.GridsController.GetGridData(x, y + 1);
@@ -667,9 +683,9 @@ public class CactusGridMaterial : GridMaterial
         return new CactusGridMaterial();
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         //如果头顶有方块，则方块被摧毁
         var upGridData = GameManager.Instance.GridsController.GetGridData(x, y + 1);
@@ -695,9 +711,9 @@ public class EnderChestGridMaterial : GridMaterial
         return new EnderChestGridMaterial();
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         //如果头顶有方块，则方块将被随机移动到其他位置
         var upGridData = GameManager.Instance.GridsController.GetGridData(x, y + 1);
@@ -802,9 +818,9 @@ public class HopperGridMaterial : GridMaterial
         }
     }
 
-    public override void GridUpdate(Transform trans, int x, int y, bool updateSource)
+    public override async UniTask GridUpdate(Transform trans, int x, int y, bool updateSource)
     {
-        base.GridUpdate(trans, x, y, updateSource);
+        await base.GridUpdate(trans, x, y, updateSource);
 
         //如果漏斗前方有方块且后方没有方块，则将前方的方块移动到后方
         GridData fromGridData = null;
@@ -852,13 +868,20 @@ public class HopperGridMaterial : GridMaterial
             //无法移动潜影盒
             if (fromGridData.GridMaterial is ShulkerBoxGridMaterial) return;
 
+            //检查坐标是否越界
+            if (toPos.x < 0 || toPos.x >= GameManager.Instance.GridsController.GridWidthCount ||
+                toPos.y < 0 || toPos.y >= GameManager.Instance.GridsController.GridHeightCount)
+            {
+                return;
+            }
+
             //移动方块
             GameManager.Instance.GridsController.SetGridData(fromPos.x, fromPos.y, null);
             GameManager.Instance.GridsController.SetGridData(toPos.x, toPos.y, fromGridData);
             fromGridData.GameObject.transform.localPosition = GameManager.Instance.GridsController.GetGridPosition(toPos.x, toPos.y);
 
             //触发被移动方块更新
-            fromGridData.GridMaterial.GridUpdate(fromGridData.GameObject.transform, toPos.x, toPos.y, true);
+            await fromGridData.GridMaterial.GridUpdate(fromGridData.GameObject.transform, toPos.x, toPos.y, true);
         }
     }
 }
