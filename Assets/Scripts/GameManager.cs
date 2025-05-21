@@ -38,18 +38,15 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            //图形向左移动一格
-            gridsController.FallingShapeMovement(new Vector2Int(-1, 0));
+            GameInput(GameInputType.Left);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            //图形向右移动一格
-            gridsController.FallingShapeMovement(new Vector2Int(1, 0));
+            GameInput(GameInputType.Right);
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            //图形向下移动一格
-            gridsController.FallingShapeMovement(new Vector2Int(0, -1));
+            GameInput(GameInputType.Down);
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
@@ -63,10 +60,10 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //图形旋转
-            gridsController.FallingShapeRotate();
+            GameInput(GameInputType.Rotate);
         }
 
+#if UNITY_EDITOR
         if (gridsController.DebugModel)
         {
             if (Input.GetKeyDown(KeyCode.G))
@@ -78,8 +75,10 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(IE());
             }
         }
+#endif
     }
 
+#if UNITY_EDITOR
     private IEnumerator IE()
     {
 
@@ -92,6 +91,7 @@ public class GameManager : MonoBehaviour
         gridsController.AddShape(GridShapeType.Single, new Vector2Int(4, gridsController.GridHeightCount), new FurnaceGridMaterial());
         yield return new WaitForSeconds(0.6f);
     }
+#endif
 
     /// <summary>
     /// 开始游戏
@@ -123,5 +123,42 @@ public class GameManager : MonoBehaviour
     public void GamePlay()
     {
         pausing = false;
+    }
+
+    /// <summary>
+    /// 处理游戏输入
+    /// </summary>
+    /// <param name="gameInputType"></param>
+    public void GameInput(GameInputType gameInputType)
+    {
+        switch (gameInputType)
+        {
+            case GameInputType.Left:
+                //图形向左移动一格
+                gridsController.FallingShapeMovement(new Vector2Int(-1, 0));
+                break;
+            case GameInputType.Right:
+                //图形向右移动一格
+                gridsController.FallingShapeMovement(new Vector2Int(1, 0));
+                break;
+            case GameInputType.Down:
+                //图形向下移动一格
+                gridsController.FallingShapeMovement(new Vector2Int(0, -1));
+                break;
+            case GameInputType.Rotate:
+                //图形旋转
+                gridsController.FallingShapeRotate();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public enum GameInputType
+    {
+        Left,
+        Right,
+        Down,
+        Rotate
     }
 }
